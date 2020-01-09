@@ -16,13 +16,16 @@ const BOARD = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  let rowArray = [];
-  for (let i  = 0; i < WIDTH; i++){
-    rowArray.push(null);
+
+  for (let i = 0; i < HEIGHT; i++) {
+    BOARD.push([]);
+
+    for (let j = 0; j < WIDTH; j++) {
+      BOARD[i].push(null);
+    }
   }
-  for (let i = 0; i < HEIGHT; i++){
-    BOARD.push(rowArray);
-  }
+
+
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
@@ -80,17 +83,19 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = +evt.target.id;
+  let x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
   placeInTable(y, x);
+
+  //update in-memory board
+  BOARD[y][x] = currPlayer;
 
   // check for win
   if (checkForWin()) {
@@ -101,7 +106,8 @@ function handleClick(evt) {
   // TODO: check if all cells in board are filled; if so call, call endGame
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
+  console.log("currPlayer = " + currPlayer)
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
