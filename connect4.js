@@ -10,9 +10,11 @@ const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
 const BOARD = []; // array of rows, each row is array of cells  (board[y][x])
+const lowestAvailSpot = []; // array of each column's lowest available spot. Negative value if column full.
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
+ *  initialize lowestAvailSpot with number of rows
  */
 
 function makeBoard() {
@@ -22,6 +24,9 @@ function makeBoard() {
 
     for (let j = 0; j < WIDTH; j++) {
       BOARD[i].push(null);
+      if (i === 0) {
+        lowestAvailSpot.push(HEIGHT - 1);
+      }
     }
   }
 
@@ -60,8 +65,12 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  const y = lowestAvailSpot[x];
+  lowestAvailSpot[x]--;
+  if (y < 0){
+    return null;
+  }
+  return y;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -76,7 +85,7 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -104,10 +113,12 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  if (lowestAvailSpot.every((element) => element < 0)){
+    endGame("GAME OVER. It's a Tie!");
+  }
 
   // switch players
-  currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
-  console.log("currPlayer = " + currPlayer)
+  currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
