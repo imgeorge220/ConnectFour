@@ -29,20 +29,21 @@ function makeBoard() {
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+  let htmlBoard = document.getElementById("board");
 
-  // TODO: add comment for this code
-  var top = document.createElement("tr");
+  // Set up player click row
+  let top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
-  for (var x = 0; x < WIDTH; x++) {
-    var headCell = document.createElement("td");
+  for (let x = 0; x < WIDTH; x++) {
+    let headCell = document.createElement("td");
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
+  // Set up game board, each cell id is their column,row coordinates
   for (var y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (var x = 0; x < WIDTH; x++) {
